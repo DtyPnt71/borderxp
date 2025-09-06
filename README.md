@@ -32,14 +32,13 @@ As players gain XP, the border expands — making the world grow together with y
 
 ## ⚙️ Configuration
 
-Default borderxp.properties:
+- Default borderxp.properties:
 
-multiplier=2.0
-minDiameter=2.0
-maxDiameter=1000000.0
-tickInterval=20
-center=spawn
-showTimerDefault=true
-
-
-You can also customize all messages with color codes (&a, &b, &#RRGGBB) and placeholders.
+   ```
+   multiplier=2.0
+   minDiameter=2.0
+   maxDiameter=1000000.0
+   tickInterval=20
+   center=spawn
+   showTimerDefault=true
+- You can also customize all messages with color codes (&a, &b, &#RRGGBB) and placeholders.
