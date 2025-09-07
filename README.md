@@ -2,9 +2,9 @@
 |[GitHub](https://github.com/DtyPnt71/borderxp/tree/main)|
 
 **BorderXP by BrnSvr**
-##Looking for someone, to make this project compatible with 
-##Fabric, Bukkit, Forge, NeoForge compatible
-##DM me on Discord -> DtyPnt71
+**Looking for someone, to make this project compatible with**
+**Fabric, Bukkit, Forge, NeoForge compatible**
+**DM me on Discord ->** DtyPnt71
 
 ## 🌟 Features
 - 🌍 **Dynamic world border** – grows automatically with the global level*  
