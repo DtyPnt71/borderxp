@@ -44,7 +44,7 @@ public class BorderXPPlugin {
 
     @Inject private PluginContainer container;
 
-    // Config
+    //
     private double multiplier = 2.0;
     private double minDiameter = 2.0;
     private double maxDiameter = 1_000_000.0;
@@ -53,29 +53,29 @@ public class BorderXPPlugin {
     private boolean showTimerDefault = true;
 
     
-    // Global XP (synchronized to all players)
+    //
     private int globalXpLevel = 0;
-// Message formats (suffixes). Prefix is permanent.
-    // Defaults in English:
+//
+    //
     private String formatActionbar = " | Playtime: {time} | MaxLvl: {max} | Target: {target}";
-    // Fixed, colorized prefix using &-codes (change here if desired)
+    //
     private String prefixColored = "&aBorderXP by BrnSvr";
     private String formatJoin = " v{version}";
     private String formatConsole = " v{version} loaded";
 
-    // Runtime
+    //
     private ScheduledTask task;
     private final Map<String, Double> lastDiameter = new HashMap<>();
     private final Map<String, Vector2d> lastCenter = new HashMap<>();
     private final Set<UUID> timerEnabled = ConcurrentHashMap.newKeySet();
     private static final double EPS = 0.01;
 
-    // Global timer state (shared for everyone) with persistence
+    //
     private long globalTimerSeconds = 0L;
     private long lastTickMs = System.currentTimeMillis();
     private long lastPersistMs = System.currentTimeMillis();
 
-    // ------------ Helpers ------------
+    //
     private Path configPath() {
         return Sponge.game().gameDirectory().resolve("config").resolve("borderxp.properties");
     }
@@ -102,7 +102,7 @@ public class BorderXPPlugin {
         return LegacyComponentSerializer.legacyAmpersand().deserialize(full);
     }
 
-    // ------------ Lifecycle ------------
+    //
     @Listener
     public void onConstruct(final ConstructPluginEvent event) throws IOException {
         // Ensure default config exists
@@ -114,14 +114,14 @@ public class BorderXPPlugin {
             }
         }
         loadConfig();
-        // Log via plugin logger (server not yet available)
+        //
         container.logger().info("BorderXP loaded - by BrnSvr " + version());
     }
 
     @Listener
     public void onPlayerJoin(final ServerSideConnectionEvent.Join event) {
         final ServerPlayer p = event.player();
-        try { p.offer(Keys.EXPERIENCE_LEVEL, this.globalXpLevel); } catch (Exception ignored) {} enforceBorderForPlayer(p); // Send join message using config suffix (default includes version)
+        try { p.offer(Keys.EXPERIENCE_LEVEL, this.globalXpLevel); } catch (Exception ignored) {} enforceBorderForPlayer(p);
         p.sendMessage(render(this.formatJoin, this.globalTimerSeconds, computeMaxLevel(), (int) clamp(computeMaxLevel()*this.multiplier, this.minDiameter, this.maxDiameter)));
         if (showTimerDefault) {
             timerEnabled.add(p.uniqueId());
@@ -212,11 +212,11 @@ public class BorderXPPlugin {
         this.tickInterval = (int) parseDouble(p.getProperty("tickInterval"), 20);
         this.centerMode = p.getProperty("center", "spawn").trim();
         this.showTimerDefault = Boolean.parseBoolean(p.getProperty("showTimerDefault", "true"));
-        // messages
+        //
         this.formatActionbar = p.getProperty("message.actionbar", this.formatActionbar);
         this.formatJoin = p.getProperty("message.join", this.formatJoin);
         this.formatConsole = p.getProperty("message.console", this.formatConsole);
-        // global timer
+        //
         try { this.globalTimerSeconds = Long.parseLong(p.getProperty("globalTimerSeconds", "0")); } catch (Exception ignored) {}
     }
 
@@ -246,18 +246,18 @@ try (var out = Files.newOutputStream(cfg)) { props.store(out, "BorderXP"); }
 
     @Listener
     public void onStartedEngine(final StartedEngineEvent<Server> event) {
-        // Announce to console using configured suffix
+        //
         try {
             var msg = render(this.formatConsole, this.globalTimerSeconds, computeMaxLevel(), (int) clamp(computeMaxLevel()*this.multiplier, this.minDiameter, this.maxDiameter));
             Sponge.systemSubject().sendMessage(msg);
         } catch (Throwable ignored) {}
-        // Enable timer for already online players if default is true
+        //
         if (showTimerDefault) {
             for (ServerPlayer p : Sponge.server().onlinePlayers()) {
                 timerEnabled.add(p.uniqueId());
             }
         }
-        // Schedule repeating task
+        //
         if (this.task != null) this.task.cancel();
         this.task = Sponge.server().scheduler().submit(
             Task.builder()
@@ -274,9 +274,9 @@ try (var out = Files.newOutputStream(cfg)) { props.store(out, "BorderXP"); }
         persistGlobalTimer();
     }
 
-    // Periodic
+    //
     private void tick() {
-        // Advance global timer by real elapsed time
+        //
         long nowMs = System.currentTimeMillis();
         long deltaMs = nowMs - lastTickMs;
         if (deltaMs >= 1000) {
@@ -289,14 +289,14 @@ try (var out = Files.newOutputStream(cfg)) { props.store(out, "BorderXP"); }
         }
 
 
-        // Adopt any player's manual XP-level change as the new global
+        //
         for (ServerPlayer p : Sponge.server().onlinePlayers()) {
             try {
                 int lvl = p.experienceLevel().get();
                 if (lvl != this.globalXpLevel) {
                     this.globalXpLevel = lvl;
-                    this.lastPersistMs = 0; // force quick persist of new global value
-                    break; // adopt first change found
+                    this.lastPersistMs = 0;
+                    break;
                 }
             } catch (Exception ignored) {}
         }
@@ -334,7 +334,7 @@ double targetDia = clamp(this.globalXpLevel * this.multiplier, this.minDiameter,
 
     private void updateBorders() {
 
-        // Sync global XP to players only if they differ (prevents wiping XP progress within the same level)
+        //
         for (ServerPlayer p : Sponge.server().onlinePlayers()) {
             try {
                 Integer current = p.experienceLevel().get();
@@ -352,7 +352,7 @@ double targetDia = clamp(this.globalXpLevel * this.multiplier, this.minDiameter,
         for (ServerWorld world : Sponge.server().worldManager().worlds()) {
             String key = world.key().formatted();
 
-            // Diameter
+            //
             Double lastDia = lastDiameter.get(key);
             if (lastDia == null || Math.abs(lastDia - diameter) > EPS) {
                 try {
@@ -361,7 +361,7 @@ double targetDia = clamp(this.globalXpLevel * this.multiplier, this.minDiameter,
                 } catch (CommandException ignored) {}
             }
 
-            // Center
+            //
             if ("spawn".equalsIgnoreCase(this.centerMode)) {
                 Vector3i spawn = world.properties().spawnPosition();
                 Vector2d newC = Vector2d.from(spawn.x() + 0.5, spawn.z() + 0.5);
