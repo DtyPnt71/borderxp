@@ -4,8 +4,7 @@
 **BorderXP by BrnSvr**
 
 **Looking for someone, to make this project compatible with**
-**Fabric, Bukkit, Forge, NeoForge compatible**
-**DM me on Discord ->** DtyPnt71
+**Fabric, [X]Bukkit, Forge, NeoForge compatible**
 
 ## 🌟 Features
 - 🌍 **Dynamic world border** – grows automatically with the global level*  
