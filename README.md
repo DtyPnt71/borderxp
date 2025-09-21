@@ -1,6 +1,8 @@
 **Beta**
 |[GitHub](https://github.com/DtyPnt71/borderxp/tree/main)|
+
 **FILES FOR PAPER WILL BE UPLOADED SOON**
+
 **BorderXP by BrnSvr**
 
 **Fabric, [X]Bukkit, Forge, NeoForge compatible**
