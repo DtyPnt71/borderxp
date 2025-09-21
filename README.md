@@ -5,7 +5,7 @@
 ---
 **FILES FOR PAPER WILL BE UPLOADED SOON**
 ---
-**Fabric, [X]Bukkit, Forge, NeoForge compatible**
+**Spigot/Paper compatible**
 
 ## 🌟 Features
 - 🌍 **Dynamic world border** – grows automatically with the global level*  
