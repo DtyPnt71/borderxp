@@ -1,0 +1,42 @@
+name: BorderXP
+main: com.brnsvr.borderxp.BorderXPPlugin
+version: 1.1.5
+api-version: '1.21'
+commands:
+  borderxp:
+    description: BorderXP controls
+    usage: /borderxp
+
+permissions:
+  borderxp.admin:
+    description: Full access to BorderXP commands
+    default: op
+  borderxp.set:
+    description: Use /borderxp set ...
+    default: op
+  borderxp.set.size:
+    description: Set border size
+    default: op
+  borderxp.set.multiplier:
+    description: Set XP multiplier
+    default: op
+  borderxp.center:
+    description: Manage border center
+    default: op
+  borderxp.timer:
+    description: Toggle personal timer display
+    default: true
+
+  borderxp.reload:
+    description: Reload BorderXP configuration
+    default: op
+
+  borderxp.setglobal:
+    description: Set the global XP level/progress manually
+    default: op
+  borderxp.globalmode:
+    description: Change how global XP is computed (max|avg|sum|leader|manual)
+    default: op
+  borderxp.leader:
+    description: Marks a player as a leader whose XP defines global when globalMode=leader
+    default: op
